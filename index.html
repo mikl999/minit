@@ -1,67 +1,62 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Telegram Bot File Converter</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <style>
-        body {
-            padding-top: 50px;
-        }
-        .container {
-            max-width: 600px;
-        }
-        .alert {
-            display: none;
-        }
-    </style>
+    <title>File Converter</title>
 </head>
 <body>
-    <div class="container">
-        <h2>File Converter Bot</h2>
-        <form id="fileForm">
-            <div class="form-group">
-                <label for="fileInput">Choose file to upload</label>
-                <input type="file" class="form-control-file" id="fileInput" name="file">
-            </div>
-            <button type="submit" class="btn btn-primary">Upload</button>
+    <h1>Upload a file to convert</h1>
+    <form id="upload-form">
+        <input type="file" id="file-input">
+        <button type="submit">Upload</button>
+    </form>
+    <div id="conversion-options" style="display: none;">
+        <h2>Choose Conversion Type</h2>
+        <form id="convert-form">
+            <input type="hidden" id="file-path">
+            <div id="options-container"></div>
+            <button type="submit">Convert</button>
         </form>
-        <div id="message" class="alert alert-success mt-3"></div>
     </div>
-
     <script>
-        document.getElementById('fileForm').addEventListener('submit', async function(event) {
+        document.getElementById('upload-form').onsubmit = async function(event) {
             event.preventDefault();
-            const fileInput = document.getElementById('fileInput');
+            const fileInput = document.getElementById('file-input');
+            const file = fileInput.files[0];
             const formData = new FormData();
-            formData.append('file', fileInput.files[0]);
+            formData.append('file', file);
 
-            try {
-                const response = await fetch('/upload', {
-                    method: 'POST',
-                    body: formData
-                });
+            const response = await fetch('https://api.telegram.org/bot7086621255:AAEzIgJv6pq0HqvSzf1sLwc3z0yn5dboxI4/sendDocument', {
+                method: 'POST',
+                body: formData
+            });
 
-                const result = await response.json();
-
-                if (response.ok) {
-                    document.getElementById('message').classList.remove('alert-danger');
-                    document.getElementById('message').classList.add('alert-success');
-                    document.getElementById('message').textContent = 'File uploaded and converted successfully!';
-                } else {
-                    document.getElementById('message').classList.remove('alert-success');
-                    document.getElementById('message').classList.add('alert-danger');
-                    document.getElementById('message').textContent = 'Error: ' + result.error;
-                }
-            } catch (error) {
-                document.getElementById('message').classList.remove('alert-success');
-                document.getElementById('message').classList.add('alert-danger');
-                document.getElementById('message').textContent = 'Error: ' + error.message;
+            const result = await response.json();
+            if (result.ok) {
+                alert('File uploaded successfully. Please check your Telegram for conversion options.');
+            } else {
+                alert('Failed to upload file.');
             }
+        };
 
-            document.getElementById('message').style.display = 'block';
-        });
+        document.getElementById('convert-form').onsubmit = async function(event) {
+            event.preventDefault();
+            const filePath = document.getElementById('file-path').value;
+            const conversionType = document.querySelector('input[name="conversion_type"]:checked').value;
+            const response = await fetch(`https://api.telegram.org/bot7086621255:AAEzIgJv6pq0HqvSzf1sLwc3z0yn5dboxI4/sendMessage`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+            });
+
+            const result = await response.json();
+            if (result.ok) {
+                alert('Conversion request sent successfully. Please check your Telegram for the result.');
+            } else {
+                alert('Failed to send conversion request.');
+            }
+        };
     </script>
 </body>
 </html>
