@@ -8,7 +8,7 @@
     <h1>Upload a file to convert</h1>
     <form id="upload-form" action="/upload" method="post" enctype="multipart/form-data">
         <input type="file" name="file" id="file-input">
-        <input type="hidden" name="user_id" id="user-id-input">
+        <input type="hidden" name="user_id" id="user-id-input" value="YOUR_USER_ID">
         <button type="submit">Upload</button>
     </form>
     <div id="conversion-options" style="display: none;">
@@ -20,7 +20,6 @@
         </form>
     </div>
     <script>
-        // Make sure to get user_id from Telegram Web App context and set it to hidden input
         document.getElementById('upload-form').onsubmit = async function(event) {
             event.preventDefault();
             const fileInput = document.getElementById('file-input');
@@ -43,11 +42,11 @@
                     alert('File uploaded successfully. Please check your Telegram for conversion options.');
                 } else {
                     console.error('Failed to upload file:', result.error);
-                    alert('Failed to upload file.');
+                    alert('Failed to upload file: ' + result.error);
                 }
             } catch (error) {
                 console.error('Error during file upload:', error);
-                alert('Error during file upload.');
+                alert('Error during file upload: ' + error.message);
             }
         };
     </script>
