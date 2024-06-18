@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Telegram Bot File Converter</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            padding-top: 50px;
+        }
+        .container {
+            max-width: 600px;
+        }
+        .alert {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>File Converter Bot</h2>
+        <form id="fileForm">
+            <div class="form-group">
+                <label for="fileInput">Choose file to upload</label>
+                <input type="file" class="form-control-file" id="fileInput" name="file">
+            </div>
+            <button type="submit" class="btn btn-primary">Upload</button>
+        </form>
+        <div id="message" class="alert alert-success mt-3"></div>
+    </div>
+
+    <script>
+        document.getElementById('fileForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            const fileInput = document.getElementById('fileInput');
+            const formData = new FormData();
+            formData.append('file', fileInput.files[0]);
+
+            try {
+                const response = await fetch('/upload', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    document.getElementById('message').classList.remove('alert-danger');
+                    document.getElementById('message').classList.add('alert-success');
+                    document.getElementById('message').textContent = 'File uploaded and converted successfully!';
+                } else {
+                    document.getElementById('message').classList.remove('alert-success');
+                    document.getElementById('message').classList.add('alert-danger');
+                    document.getElementById('message').textContent = 'Error: ' + result.error;
+                }
+            } catch (error) {
+                document.getElementById('message').classList.remove('alert-success');
+                document.getElementById('message').classList.add('alert-danger');
+                document.getElementById('message').textContent = 'Error: ' + error.message;
+            }
+
+            document.getElementById('message').style.display = 'block';
+        });
+    </script>
+</body>
+</html>
