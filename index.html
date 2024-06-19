@@ -6,14 +6,14 @@
 </head>
 <body>
     <h1>Upload a file to convert</h1>
-    <form id="upload-form" action="http://141.8.192.58:8080/upload" method="post" enctype="multipart/form-data">
+    <form id="upload-form" action="http://141.8.192.58:3000/upload" method="post" enctype="multipart/form-data">
         <input type="file" name="file" id="file-input" required>
         <input type="hidden" name="user_id" id="user-id-input" value="YOUR_USER_ID">
         <button type="submit">Upload</button>
     </form>
     <div id="conversion-options" style="display: none;">
         <h2>Choose Conversion Type</h2>
-        <form id="convert-form" action="http://141.8.192.58:8080/convert" method="post">
+        <form id="convert-form" action="http://141.8.192.58:3000/convert" method="post">
             <input type="hidden" name="file_path" id="file-path">
             <div id="options-container">
                 <!-- Example options -->
@@ -37,7 +37,7 @@
 
             try {
                 console.log('Uploading file...');
-                const response = await fetch('http://141.8.192.58:8080/upload', {
+                const response = await fetch('http://141.8.192.58:3000/upload', {
                     method: 'POST',
                     body: formData
                 });
