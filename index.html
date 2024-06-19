@@ -13,9 +13,16 @@
     </form>
     <div id="conversion-options" style="display: none;">
         <h2>Choose Conversion Type</h2>
-        <form id="convert-form">
-            <input type="hidden" id="file-path">
-            <div id="options-container"></div>
+        <form id="convert-form" action="https://141.8.192.58/webhook" method="post">
+            <input type="hidden" name="file_path" id="file-path">
+            <div id="options-container">
+                <!-- Here you can dynamically add conversion options based on file type -->
+                <!-- Example options (replace with actual options based on your bot's capabilities) -->
+                <label><input type="radio" name="conversion_type" value="pdf_to_txt"> PDF to TXT</label><br>
+                <label><input type="radio" name="conversion_type" value="pdf_to_doc"> PDF to DOC</label><br>
+                <label><input type="radio" name="conversion_type" value="pdf_to_docx"> PDF to DOCX</label><br>
+                <!-- Add more options based on your bot's supported conversions -->
+            </div>
             <button type="submit">Convert</button>
         </form>
     </div>
@@ -39,7 +46,8 @@
                 console.log('Upload response:', result);
 
                 if (result.success) {
-                    alert('File uploaded successfully. Please check your Telegram for conversion options.');
+                    document.getElementById('conversion-options').style.display = 'block';
+                    document.getElementById('file-path').value = result.file_path; // Assuming server sends back file_path
                 } else {
                     console.error('Failed to upload file:', result.error);
                     alert('Failed to upload file: ' + result.error);
