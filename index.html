@@ -6,7 +6,7 @@
 </head>
 <body>
     <h1>Upload a file to convert</h1>
-    <form id="upload-form" action="/upload" method="post" enctype="multipart/form-data">
+    <form id="upload-form" action="http://a0993199.xsph.ru/upload" method="post" enctype="multipart/form-data">
         <input type="file" name="file" id="file-input">
         <input type="hidden" name="user_id" id="user-id-input" value="YOUR_USER_ID">
         <button type="submit">Upload</button>
@@ -31,7 +31,7 @@
 
             try {
                 console.log('Uploading file...');
-                const response = await fetch('/upload', {
+                const response = await fetch('http://a0993199.xsph.ru/upload', {
                     method: 'POST',
                     body: formData
                 });
